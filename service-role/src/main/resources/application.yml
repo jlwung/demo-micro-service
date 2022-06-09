@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: service-role
+  sleuth:
+    baggage:
+      correlation-fields:
+        - X-TEST
+      remote-fields:
+        - X-TEST
+
+server:
+  port: 7002
+
+#logging.level.root: debug
+logging.level.org.apache.coyote.http11: debug
+
+eureka:
+  client:
+    RegistryFetchIntervalSeconds: 2
+    serviceUrl:
+      defaultZone: http://localhost:7777/eureka
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5
+

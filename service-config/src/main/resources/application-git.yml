@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/jlung/pmp-config.git
+          search-paths: config
+          default-label: dev
+          ignoreLocalSshSettings: true
+          skipSslValidation: true
+          username: deploy-token-config
+          password: a2zpXxfFhBgpzjCBF7qs
+
+logging:
+  level:
+    root: INFO

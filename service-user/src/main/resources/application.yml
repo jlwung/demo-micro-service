@@ -1,0 +1,17 @@
+
+spring:
+  application:
+    name: service-user
+server:
+  port: 7003
+
+eureka:
+  client:
+    RegistryFetchIntervalSeconds: 2
+    serviceUrl:
+      defaultZone: http://localhost:7777/eureka
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5

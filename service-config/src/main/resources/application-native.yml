@@ -1,0 +1,7 @@
+# 使用本地配置需要激活此配置,默认去src/config找配置文件,可以指定磁盘绝对路径
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:D:/Workspace/demo-micro-service/service-config/src/main/resources/config

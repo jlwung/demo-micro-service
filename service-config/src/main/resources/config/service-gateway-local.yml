@@ -1,0 +1,25 @@
+
+zuul:
+  ribbon:
+    eager-load:
+      enabled: true
+  ignoredServices: '*'
+  routes:
+    roleService:
+      path: /api/v1/roles/**
+      serviceId: service-role
+      stripPrefix: false
+    roleService2:
+      path: /api/v1/roles2/**
+      serviceId: service-role
+      stripPrefix: false
+    userService:
+      path: /api/v1/users/**
+      serviceId: service-user
+      stripPrefix: false
+  host:
+    connect-timeout-millis: 300000
+    socket-timeout-millis: 300000
+ribbon:
+  ConnectTimeout: 10000
+  ReadTimeout: 300000
