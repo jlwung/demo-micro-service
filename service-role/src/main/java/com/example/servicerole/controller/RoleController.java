@@ -24,7 +24,7 @@ public class RoleController {
     @GetMapping("/roles/{id}")
     public Role getRole(@PathVariable("id") String id){
         log.info("Role id is {}", id);
-        log.info("Baggage for [x-test] is [" + ExtraBaggageContext.getFieldByName(tracer.currentSpan().context(),"X-TEST").getValue() + "]");
+        log.info("Baggage for [x-test] is [{}]", BaggageField.getByName(tracer.currentSpan().context(),"X-TEST").getValue());
 
         Role role = new Role();
         role.setName("Role is " + id);
