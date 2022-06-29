@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: service-gateway
+  profiles:
+    active: local
+  sleuth:
+    baggage:
+      correlation-fields:
+        - X-TEST
+      remote-fields:
+        - X-TEST
+  cloud:
+    config:
+      fail-fast: true
+      discovery:
+        enabled: true
+        service-id: service-config
+
+server:
+  port: 7001
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+#logging.level.root: info
+#logging.level.org.springframework.cloud.sleuth.instrument.web.client.feign: debug
+#logging.level.sun.net.www.protocol.http: debug
+
+eureka:
+  client:
+    RegistryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:7777/eureka
+
