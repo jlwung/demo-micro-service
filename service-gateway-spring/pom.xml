@@ -12,8 +12,8 @@
     <groupId>com.example</groupId>
     <artifactId>service-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>service-gateway</name>
-    <description>service-gateway</description>
+    <name>service-gateway-spring</name>
+    <description>service-gateway-spring</description>
 
     <properties>
         <java.version>11</java.version>
