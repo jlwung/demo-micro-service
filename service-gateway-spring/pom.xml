@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>service-gateway</artifactId>
+    <artifactId>service-gateway-spring</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>service-gateway-spring</name>
     <description>service-gateway-spring</description>
