@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.example.common.common.ErrorResponse;
 import org.example.common.common.MyException;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Optional;
 
 import static feign.FeignException.errorStatus;
 
@@ -18,16 +21,18 @@ public class StashErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String methodKey, Response response) {
-        String s = response.body().toString();
+        String s = Optional.ofNullable(response.body()).map(Response.Body::toString).orElse(null);
         log.info("response body:" + s);
-        try {
-            ErrorResponse errorResponse = objectMapper.readValue(s, ErrorResponse.class);
-            if (errorResponse.getCode() >= 1000) {
-                return new MyException(errorResponse.getCode(), errorResponse.getMessage());
+        if(StringUtils.isNotBlank(s)) {
+            try {
+                ErrorResponse errorResponse = objectMapper.readValue(s, ErrorResponse.class);
+                if (errorResponse.getCode() >= 1000) {
+                    return new MyException(errorResponse.getCode(), errorResponse.getMessage());
+                }
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return errorStatus(methodKey, response);
             }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return errorStatus(methodKey, response);
         }
         return errorStatus(methodKey, response);
     }

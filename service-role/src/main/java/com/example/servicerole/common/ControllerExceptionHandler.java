@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.common.common.ErrorResponse;
 import org.example.common.common.MyException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
@@ -18,13 +19,12 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 @Slf4j
-
 public class ControllerExceptionHandler {
 
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<ErrorResponse> handleException(IllegalArgumentException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_PROBLEM_JSON).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
@@ -35,22 +35,22 @@ public class ControllerExceptionHandler {
                 .map(ObjectError::getDefaultMessage)
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(","));
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errorMessage), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_PROBLEM_JSON).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errorMessage));
     }
 
     @ExceptionHandler({MyException.class})
     public ResponseEntity<ErrorResponse> handleException(MyException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new ErrorResponse(e.getCode(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_PROBLEM_JSON).body(new ErrorResponse(e.getCode(), e.getMessage()));
     }
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         log.error(e.getMessage(), e);
         if(e instanceof MethodArgumentTypeMismatchException || e instanceof HttpMessageNotReadableException){
-            return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_PROBLEM_JSON).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.APPLICATION_PROBLEM_JSON).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
     }
 
 }
